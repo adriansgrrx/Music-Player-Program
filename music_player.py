@@ -16,8 +16,52 @@ playlist = {
     "Creepin'": {
         "title": "Creepin'",
         "artist": "The Weeknd & 21 Savage", 
-        "duration": 217
+        "duration": 222
     },
+    
+
+    "As It Was": {
+        "title": "As It Was",
+        "artist": "Harry Styles", 
+        "duration": 167
+    },
+
+    "Unholy": {
+        "title": "Unholy",
+        "artist": "Sam Smith", 
+        "duration": 157
+    },
+
+    "golden hour": {
+        "title": "golden hour",
+        "artist": "JVKE", 
+        "duration": 209
+    },
+
+    "Anti-Hero": {
+        "title": "Anti-Hero",
+        "artist": "Taylor Swift", 
+        "duration": 201
+    },
+
+    "Here With Me": {
+        "title": "Here With Me",
+        "artist": "d4vid", 
+        "duration": 242
+    },
+
+    "Made You Look": {
+        "title": "Made You Look",
+        "artist": "Megan Trainor", 
+        "duration": 134
+    },
+
+    "Lavander Haze": {
+        "title": "Lavander Haze",
+        "artist": "Taylor Swift", 
+        "duration": 202
+    },
+
 }
 
 class Song:
