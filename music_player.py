@@ -2,10 +2,15 @@ import collections
 
 playlist = {
     "Flowers": {
-        "title": "Flowers", 
+        "title": "Flowers",
         "artist": "Miley Cyrus", 
         "duration": 200 
-    }
+    },
+    "Kill Bill": {
+        "title": "Kill Bill",
+        "artist": "Sza", 
+        "duration": 154 
+    },
 }
 
 class Song:
@@ -23,7 +28,7 @@ class MusicPlayer:
         self.library = []
 
     def add_to_library(self, song):
-        self.library.append(song)
+        self.library.append([song])
 
     def play_next_song(self):
         if not self.song_queue:
@@ -36,15 +41,14 @@ player = MusicPlayer()
 
 # Add some songs to the library
 player.add_to_library(Song(playlist["Flowers"]["title"], playlist["Flowers"]["artist"], playlist["Flowers"]["duration"]))
-# player.add_to_library(Song("Shape of You", "Ed Sheeran", 250))
-# player.add_to_library(Song("Despacito", "Luis Fonsi", 290))
+player.add_to_library(Song(playlist["Kill Bill"]["title"], playlist["Kill Bill"]["artist"], playlist["Kill Bill"]["duration"]))
 
 # Add songs to the queue
 player.song_queue.append(player.library[0])
-# player.song_queue.append(player.library[1])
-# player.song_queue.append(player.library[2])
+player.song_queue.append(player.library[1])
 
 # Play the next song in the queue
 player.play_next_song()
 player.play_next_song()
 player.play_next_song()
+print(player.library[0][0])
