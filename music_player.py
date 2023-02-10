@@ -26,7 +26,7 @@ class MusicPlayer:
 
 player = MusicPlayer()
 
-# Add some songs to the playlist
+# By default, these are the songs to play.
 yourSongs = [
     Song("Flowers", "Miley Cyrus", 200),
     Song("Kill Bill", "Sza", 154),
@@ -41,11 +41,10 @@ yourSongs = [
 ]
 
 # Add songs to the queue
+# Add some songs to the playlist
 for song in yourSongs:
     player.addToPlaylist(song)
-print(song)
 
-# Play the next song in the queue
-print(player.playlist)
-# print(player.playlist[1])
-# print(player.playlist[2])
+# Play all the songs in the playlist
+for song in player.playlist:
+    print(f"Now playing: {song.title} by {song.artist}")
