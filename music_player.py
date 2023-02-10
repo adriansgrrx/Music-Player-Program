@@ -41,14 +41,11 @@ yourSongs = [
 ]
 
 # Add songs to the queue
-player.song_queue.append(player.library[0])
-player.song_queue.append(player.library[1])
-player.song_queue.append(player.library[2])
+for song in yourSongs:
+    player.add_to_library(song)
+print(song)
 
 # Play the next song in the queue
-player.play_next_song()
-player.play_next_song()
-player.play_next_song()
 print(player.library)
-print(player.library[1])
-print(player.library[2])
+# print(player.library[1])
+# print(player.library[2])
