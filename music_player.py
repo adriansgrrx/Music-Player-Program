@@ -13,6 +13,7 @@ class MusicPlayer:
     def __init__(self):
         self.songQueue = collections.deque()
         self.playlist = []
+        self.history = collections.deque()
 
     def addToPlaylist(self, song):
         self.playlist.append(song)
@@ -21,6 +22,7 @@ class MusicPlayer:
         for song in self.playlist:
             if song.title == title:
                 print(f"Now playing: {song.title} by {song.artist}")
+                self.history.append(song)
                 return song
         return print("The song is not on your playlist.")
 
@@ -33,7 +35,16 @@ class MusicPlayer:
             print("No songs in the queue.")
         else:
             song = self.songQueue.popleft()
-            print(f"Playing {song}")
+            self.history.append(song)
+            print(f"Next song playing: {song.title} by {song.artist}")
+            
+    def playPrevSong(self):
+        if not self.history:
+            print("No previous songs in the playlist.")
+        else:
+            song = self.history.pop()
+            self.songQueue.appendleft(song)
+            print(f"Previous song playing: {song.title} by {song.artist}")
 
 player = MusicPlayer()
 
@@ -58,4 +69,5 @@ for song in yourSongs:
 
 player.searchSong("Lavander Haze")
 player.playNextSong()
-player.playNextSong()
+player.playPrevSong()
+player.playPrevSong()
