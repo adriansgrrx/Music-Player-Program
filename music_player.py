@@ -11,22 +11,22 @@ class Song:
 
 class MusicPlayer:
     def __init__(self):
-        self.song_queue = collections.deque()
-        self.library = []
+        self.songQueue = collections.deque()
+        self.playlist = []
 
-    def add_to_library(self, song):
-        self.library.append(song)
+    def addToPlaylist(self, song):
+        self.playlist.append(song)
 
-    def play_next_song(self):
-        if not self.song_queue:
+    def playNextSong(self):
+        if not self.songQueue:
             print("No songs in the queue.")
         else:
-            song = self.song_queue.popleft()
+            song = self.songQueue.popleft()
             print(f"Playing {song}")
 
 player = MusicPlayer()
 
-# Add some songs to the library
+# Add some songs to the playlist
 yourSongs = [
     Song("Flowers", "Miley Cyrus", 200),
     Song("Kill Bill", "Sza", 154),
@@ -42,10 +42,10 @@ yourSongs = [
 
 # Add songs to the queue
 for song in yourSongs:
-    player.add_to_library(song)
+    player.addToPlaylist(song)
 print(song)
 
 # Play the next song in the queue
-print(player.library)
-# print(player.library[1])
-# print(player.library[2])
+print(player.playlist)
+# print(player.playlist[1])
+# print(player.playlist[2])
