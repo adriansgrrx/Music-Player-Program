@@ -17,6 +17,13 @@ class MusicPlayer:
     def addToPlaylist(self, song):
         self.playlist.append(song)
 
+    def searchSong(self, title):
+        for song in self.playlist:
+            if song.title == title:
+                print(f"Now playing: {song.title} by {song.artist}")
+                return song
+        return print("The song is not on your playlist.")
+
     def playNextSong(self):
         if not self.songQueue:
             print("No songs in the queue.")
@@ -40,7 +47,6 @@ yourSongs = [
     Song("Lavander Haze", "Taylor Swift",  202),
 ]
 
-# Add songs to the queue
 # Add some songs to the playlist
 for song in yourSongs:
     player.addToPlaylist(song)
@@ -48,3 +54,5 @@ for song in yourSongs:
 # Play all the songs in the playlist
 for song in player.playlist:
     print(f"Now playing: {song.title} by {song.artist}")
+
+player.searchSong("Lavander Haze")
