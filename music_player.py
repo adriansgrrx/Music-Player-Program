@@ -1,5 +1,13 @@
 import collections
 
+playlist = {
+    "Flowers": {
+        "title": "Flowers", 
+        "artist": "Miley Cyrus", 
+        "duration": 200 
+    }
+}
+
 class Song:
     def __init__(self, title, artist, duration):
         self.title = title
@@ -27,14 +35,14 @@ class MusicPlayer:
 player = MusicPlayer()
 
 # Add some songs to the library
-player.add_to_library(Song("Hello", "Adele", 320))
-player.add_to_library(Song("Shape of You", "Ed Sheeran", 250))
-player.add_to_library(Song("Despacito", "Luis Fonsi", 290))
+player.add_to_library(Song(playlist["Flowers"]["title"], playlist["Flowers"]["artist"], playlist["Flowers"]["duration"]))
+# player.add_to_library(Song("Shape of You", "Ed Sheeran", 250))
+# player.add_to_library(Song("Despacito", "Luis Fonsi", 290))
 
 # Add songs to the queue
 player.song_queue.append(player.library[0])
-player.song_queue.append(player.library[1])
-player.song_queue.append(player.library[2])
+# player.song_queue.append(player.library[1])
+# player.song_queue.append(player.library[2])
 
 # Play the next song in the queue
 player.play_next_song()
