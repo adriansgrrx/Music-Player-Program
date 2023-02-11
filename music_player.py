@@ -62,12 +62,40 @@ yourSongs = [
     Song("Lavander Haze", "Taylor Swift",  202),
 ]
 
-# Add every songs to the playlist
+# Add every songs to the playlist and to the queue
 for song in yourSongs:
     player.addToPlaylist(song)
     player.songQueue.append(song)
 
-player.searchSong("Lavander Haze")
-player.playNextSong()
-player.playPrevSong()
-player.playPrevSong()
+# player.searchSong("Lavander Haze")
+# player.playNextSong()
+# player.playPrevSong()
+
+# This is for aesthetic purposes only, a function to center a text output.
+textsToBeCentered = []
+def centerOutput(text):
+    width = 80
+    left_padding = (width - len(text))//2
+    right_padding = width - len(text) - left_padding
+    print(" " * left_padding + text + " " * right_padding)
+
+def welcomeUser():
+    welcomeLine = "Welcome to SoundScape!"
+    tagline = "Your sound track to life.\n\n"
+    yourSongsText = "Your Songs:"
+    textsToBeCentered.append(welcomeLine)
+    textsToBeCentered.append(tagline)
+    textsToBeCentered.append(yourSongsText)
+
+    for song in player.playlist:
+        songTitles = f"{song.title} by {song.artist}"
+        textsToBeCentered.append(songTitles)
+
+def main():
+    welcomeUser()
+    for text in textsToBeCentered:
+        centerOutput(text)
+    commands = print("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song")
+main()
+    
+
