@@ -36,7 +36,6 @@ class MusicPlayer:
                 if key == "X":
                     commands()
 
-
     def playAllSongs(self):
         for song in player.playlist:
             print(f"\n                      Now playing: {song.title} by {song.artist}")
@@ -86,11 +85,9 @@ class MusicPlayer:
             print(f"\n                      Next song playing: {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
             
-
-
 player = MusicPlayer()
 
-# By default, these are the songs to play.
+# By default, these are the songs available to play.
 yourSongs = [
     Song("Flowers", "Miley Cyrus", 200),
     Song("Kill Bill", "Sza", 154),
@@ -104,12 +101,12 @@ yourSongs = [
     Song("Lavander Haze", "Taylor Swift",  202),
 ]
 
-# Add every songs to the playlist and to the queue
+# Add every song to the playlist and to the queue
 for song in yourSongs:
     player.addToPlaylist(song)
     player.songQueue.append(song)
 
-# This is for aesthetic purposes only, a function to center a text output.
+# This is for aesthetic purposes only. A function to center a text output.
 # ************************************************************************
 textsToBeCentered = []
 def centerOutput(text):
@@ -143,26 +140,34 @@ def welcomeUser():
         textsToBeCentered.append(songTitles)
     for text in textsToBeCentered:
         centerOutput(text)
+    textsToBeCentered.clear()
 # ************************************************************************
 
 def commands():
-    commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n4. Add a song\n>>> "))
+    while True:
+        try:
+            commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n4. Add a song\n>>> "))
 
-    if commands == 1:
-        displayOnPlayCommands()
-        player.playAllSongs()
-    
-    elif commands == 2:
-        selectedSong = str(input("Song title: "))
-        displayOnPlayCommands()
-        player.playSingleSong(selectedSong.lower())
+            if commands == 1:
+                displayOnPlayCommands()
+                player.playAllSongs()
+            
+            elif commands == 2:
+                selectedSong = str(input("Song title: "))
+                displayOnPlayCommands()
+                player.playSingleSong(selectedSong.lower())
 
-    elif commands == 3:
-        selectedSong = str(input("Song title: "))
-        displayOnPlayCommands()
-        player.searchSong(selectedSong.lower())
+            elif commands == 3:
+                selectedSong = str(input("Song title: "))
+                displayOnPlayCommands()
+                player.searchSong(selectedSong.lower())
+        except ValueError:
+            print("[Invalid Input]")
 
-welcomeUser()
-commands()
+def main():
+    welcomeUser()
+    commands()
+
+main()
 
 
