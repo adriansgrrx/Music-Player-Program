@@ -1,4 +1,5 @@
 import collections
+import time
 
 class Song:
     def __init__(self, title, artist, duration):
@@ -15,36 +16,45 @@ class MusicPlayer:
         self.playlist = []
         self.history = collections.deque()
 
+    def durationCountdown(self, duration):
+        while duration:
+            mins, secs = divmod(duration, 60)
+            timeFormat = '{:02d}:{:02d}'.format(mins, secs)
+            print(f"                                        {timeFormat}", end='\r')
+            time.sleep(1)
+            duration -= 1
+
     def addToPlaylist(self, song):
         self.playlist.append(song)
 
     def searchSong(self, title):
         for song in self.playlist:
             if song.title == title:
-                print(f"Now playing: {song.title} by {song.artist}")
+                print(f"                        Now playing: {song.title} by {song.artist}")
                 self.history.append(song)
                 return song
-        return print("The song is not on your playlist.")
+        return print("                        The song is not on your playlist.")
 
     def playAllSongs(self):
         for song in player.playlist:
-            print(f"Now playing: {song.title} by {song.artist}")
+            print(f"                        Now playing, {song.title} by {song.artist}")
+            player.durationCountdown(song.duration)
 
     def playNextSong(self):
         if not self.songQueue:
-            print("No songs in the queue.")
+            print("                        No songs in the queue.")
         else:
             song = self.songQueue.popleft()
             self.history.append(song)
-            print(f"Next song playing: {song.title} by {song.artist}")
+            print(f"                        Next song playing: {song.title} by {song.artist}")
             
     def playPrevSong(self):
         if not self.history:
-            print("No previous songs in the playlist.")
+            print("                        No previous songs in the playlist.")
         else:
             song = self.history.pop()
             self.songQueue.appendleft(song)
-            print(f"Previous song playing: {song.title} by {song.artist}")
+            print(f"                        Previous song playing: {song.title} by {song.artist}")
 
 player = MusicPlayer()
 
@@ -95,7 +105,11 @@ def main():
     welcomeUser()
     for text in textsToBeCentered:
         centerOutput(text)
-    commands = print("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song")
+    commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n>>> "))
+    if commands == 1:
+        player.playAllSongs()
+
+
 main()
     
 
