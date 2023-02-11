@@ -18,7 +18,7 @@ class MusicPlayer:
         self.history = collections.deque()
 
     def durationCountdown(self, duration):
-        while duration:
+        while duration | self.noSongsAvailable:
             mins, secs = divmod(duration, 60)
             timeFormat = '{:02d}:{:02d}'.format(mins, secs)
             print(f"                                    {timeFormat}", end='\r')
@@ -30,26 +30,28 @@ class MusicPlayer:
                     player.playNextSong()
                 if key == "P":
                     player.playPrevSong()
-            if duration == 0:
-                print("Goodbye!")
-                break
+                if key == "X":
+                    commands()
+            # if duration == 0:
+            #     break
 
     def addToPlaylist(self, song):
         self.playlist.append(song)
-
-    def searchSong(self, title):
-        for song in self.playlist:
-            if song.title == title:
-                print(f"\n                      Now playing: {song.title} by {song.artist}")
-                player.durationCountdown(song.duration)
-                self.history.append(song)
-                return song
-        return print("\n                    The song is not on your playlist.")
 
     def playAllSongs(self):
         for song in player.playlist:
             print(f"\n                      Now playing, {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
+
+    def searchSong(self, title):
+        for song in self.playlist:
+            
+            if song.title.lower() == title:
+                print(f"\n                      Now playing: {song.title} by {song.artist}")
+                player.durationCountdown(song.duration)
+                self.history.append(song)
+                return song
+        return print("\n                    The song is not on your playlist.")
 
     def playSingleSong(self, title):
         song = self.searchSong(title)
@@ -57,11 +59,12 @@ class MusicPlayer:
             self.songQueue.append(song)
             self.playNextSong()
         else:
-            print("Song not found in the library.")
+            print("                           Song not found in the library.")
 
     def playNextSong(self):
         if not self.songQueue:
-            print("\n                           No songs in the queue.")
+            print("\n                           No songs in the queue.\n")
+            commands()
         else:
             song = self.songQueue.popleft()
             self.history.append(song)
@@ -70,11 +73,11 @@ class MusicPlayer:
             
     def playPrevSong(self):
         if not self.history:
-            print("\n                      No previous songs in the playlist.")
+            print("\n                         No previous songs in the playlist.\n")
+            commands()
         
         else:
             song = self.history.pop()
-            self.songQueue.appendleft(song)
             print(f"\n                      Previous song playing: {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
 
@@ -100,9 +103,6 @@ for song in yourSongs:
     player.addToPlaylist(song)
     player.songQueue.append(song)
 
-# player.searchSong("Lavander Haze")
-# player.playNextSong()
-# player.playPrevSong()
 
 # This is for aesthetic purposes only, a function to center a text output.
 textsToBeCentered = []
@@ -111,6 +111,19 @@ def centerOutput(text):
     left_padding = (width - len(text))//2
     right_padding = width - len(text) - left_padding
     print(" " * left_padding + text + " " * right_padding)
+
+
+txtDisplayOnPlayCommands = []
+def displayOnPlayCommands():
+    onPlayCommand1 = "Press [N] to play the next song"
+    onPlayCommand2 = "Press [P] to play the previous song"
+    onPlayCommand3 = "Press [X] to stop the song"
+    txtDisplayOnPlayCommands.append(onPlayCommand1)
+    txtDisplayOnPlayCommands.append(onPlayCommand2)
+    txtDisplayOnPlayCommands.append(onPlayCommand3)
+    for text in txtDisplayOnPlayCommands:
+        centerOutput(text)
+    txtDisplayOnPlayCommands.clear()
 
 def welcomeUser():
     welcomeLine = "Welcome to SoundScape!"
@@ -123,24 +136,28 @@ def welcomeUser():
     for song in player.playlist:
         songTitles = f"{song.title} by {song.artist}"
         textsToBeCentered.append(songTitles)
-
-def main():
-    welcomeUser()
     for text in textsToBeCentered:
         centerOutput(text)
+
+def commands():
     commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n4. Add a song\n>>> "))
 
+
     if commands == 1:
+        displayOnPlayCommands()
         player.playAllSongs()
     
     elif commands == 2:
+        displayOnPlayCommands()
         selectedSong = str(input("Song title: "))
         player.playSingleSong(selectedSong)
 
     elif commands == 3:
+        displayOnPlayCommands()
         selectedSong = str(input("Song title: "))
         player.searchSong(selectedSong)
 
-main()
-    
+welcomeUser()
+commands()
+
 
