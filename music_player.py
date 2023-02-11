@@ -17,8 +17,11 @@ class MusicPlayer:
         self.playlist = []
         self.history = collections.deque()
 
+    def addToPlaylist(self, song):
+        self.playlist.append(song)
+
     def durationCountdown(self, duration):
-        while duration | self.noSongsAvailable:
+        while duration:
             mins, secs = divmod(duration, 60)
             timeFormat = '{:02d}:{:02d}'.format(mins, secs)
             print(f"                                    {timeFormat}", end='\r')
@@ -32,26 +35,12 @@ class MusicPlayer:
                     player.playPrevSong()
                 if key == "X":
                     commands()
-            # if duration == 0:
-            #     break
 
-    def addToPlaylist(self, song):
-        self.playlist.append(song)
 
     def playAllSongs(self):
         for song in player.playlist:
-            print(f"\n                      Now playing, {song.title} by {song.artist}")
+            print(f"\n                      Now playing: {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
-
-    def searchSong(self, title):
-        for song in self.playlist:
-            
-            if song.title.lower() == title:
-                print(f"\n                      Now playing: {song.title} by {song.artist}")
-                player.durationCountdown(song.duration)
-                self.history.append(song)
-                return song
-        return print("\n                    The song is not on your playlist.")
 
     def playSingleSong(self, title):
         song = self.searchSong(title)
@@ -59,7 +48,33 @@ class MusicPlayer:
             self.songQueue.append(song)
             self.playNextSong()
         else:
-            print("                           Song not found in the library.")
+            print("                         Song not found in the playlist.\n")
+
+    def searchSong(self, title):
+        for song in self.playlist:
+            lowerSong = song.title.lower() 
+            if  lowerSong == title:
+                print(f"\n                      Search Result: {song.title} by {song.artist}")
+                permission = input("                     Do you want to play this song? [y/n]\n                                 >>> ").lower()
+                if permission == "y":
+                    print(f"\n                      Now playing: {song.title} by {song.artist}")
+                    player.durationCountdown(song.duration)
+                elif permission == "n":
+                    commands()
+                else:
+                    print("Invalid Input")
+                self.history.append(song)
+                return song
+
+    def playPrevSong(self):
+        if not self.history:
+            print("\n                         No previous songs in the playlist.\n")
+            commands()
+        
+        else:
+            song = self.history.pop()
+            print(f"\n                      Previous song playing: {song.title} by {song.artist}")
+            player.durationCountdown(song.duration)
 
     def playNextSong(self):
         if not self.songQueue:
@@ -71,15 +86,6 @@ class MusicPlayer:
             print(f"\n                      Next song playing: {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
             
-    def playPrevSong(self):
-        if not self.history:
-            print("\n                         No previous songs in the playlist.\n")
-            commands()
-        
-        else:
-            song = self.history.pop()
-            print(f"\n                      Previous song playing: {song.title} by {song.artist}")
-            player.durationCountdown(song.duration)
 
 
 player = MusicPlayer()
@@ -103,15 +109,14 @@ for song in yourSongs:
     player.addToPlaylist(song)
     player.songQueue.append(song)
 
-
 # This is for aesthetic purposes only, a function to center a text output.
+# ************************************************************************
 textsToBeCentered = []
 def centerOutput(text):
     width = 80
     left_padding = (width - len(text))//2
     right_padding = width - len(text) - left_padding
     print(" " * left_padding + text + " " * right_padding)
-
 
 txtDisplayOnPlayCommands = []
 def displayOnPlayCommands():
@@ -138,24 +143,24 @@ def welcomeUser():
         textsToBeCentered.append(songTitles)
     for text in textsToBeCentered:
         centerOutput(text)
+# ************************************************************************
 
 def commands():
     commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n4. Add a song\n>>> "))
-
 
     if commands == 1:
         displayOnPlayCommands()
         player.playAllSongs()
     
     elif commands == 2:
-        displayOnPlayCommands()
         selectedSong = str(input("Song title: "))
-        player.playSingleSong(selectedSong)
+        displayOnPlayCommands()
+        player.playSingleSong(selectedSong.lower())
 
     elif commands == 3:
-        displayOnPlayCommands()
         selectedSong = str(input("Song title: "))
-        player.searchSong(selectedSong)
+        displayOnPlayCommands()
+        player.searchSong(selectedSong.lower())
 
 welcomeUser()
 commands()
