@@ -34,36 +34,54 @@ class MusicPlayer:
                 if key == "P":
                     player.playPrevSong()
                 if key == "X":
+                    print("                           Music player stopped.\n")
                     commands()
 
     def playAllSongs(self):
         for song in player.playlist:
+            self.songQueue.popleft()
+            self.songQueue.append(song)
+            self.history.appendleft(song)
             print(f"\n                      Now playing: {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
+            # print(self.songQueue)
+            # print("***********")
+            # print(self.history)
+            # print("***********")
+            # print(self.playlist)
+            # print("***********")
 
     def playSingleSong(self, title):
-        song = self.searchSong(title)
-        if song:
+        for song in self.playlist:
             self.songQueue.append(song)
-            self.playNextSong()
+            lowerSong = song.title.lower() 
+            if  lowerSong == title:
+                print()
+                displayOnPlayCommands()
+                print(f"\n                       Now playing: {song.title} by {song.artist}")
+                player.durationCountdown(song.duration)
         else:
-            print("                         Song not found in the playlist.\n")
+            print("                         [Song not found in the playlist]")
+            commands()
 
     def searchSong(self, title):
         for song in self.playlist:
             lowerSong = song.title.lower() 
             if  lowerSong == title:
+                print()
+                displayOnPlayCommands()
                 print(f"\n                      Search Result: {song.title} by {song.artist}")
                 permission = input("                     Do you want to play this song? [y/n]\n                                 >>> ").lower()
+        
                 if permission == "y":
                     print(f"\n                      Now playing: {song.title} by {song.artist}")
                     player.durationCountdown(song.duration)
                 elif permission == "n":
                     commands()
-                else:
-                    print("Invalid Input")
-                self.history.append(song)
                 return song
+        else:
+            print("                         [Song not found in the playlist]")
+            commands()
 
     def playPrevSong(self):
         if not self.history:
@@ -71,9 +89,10 @@ class MusicPlayer:
             commands()
         
         else:
-            song = self.history.pop()
-            print(f"\n                      Previous song playing: {song.title} by {song.artist}")
-            player.durationCountdown(song.duration)
+            getSong = self.history.popleft()
+            self.songQueue.append(getSong)
+            print(f"\n                      Previous Song playing: {getSong.title} by {getSong.artist}")
+            player.durationCountdown(getSong.duration)
 
     def playNextSong(self):
         if not self.songQueue:
@@ -81,7 +100,8 @@ class MusicPlayer:
             commands()
         else:
             song = self.songQueue.popleft()
-            self.history.append(song)
+            self.history.appendleft(song)
+            # self.history.append(song)
             print(f"\n                      Next song playing: {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
             
@@ -89,7 +109,7 @@ player = MusicPlayer()
 
 # By default, these are the songs available to play.
 yourSongs = [
-    Song("Flowers", "Miley Cyrus", 200),
+    Song("Flowers", "Miley Cyrus", 2),
     Song("Kill Bill", "Sza", 154),
     Song("Creepin'", "The Weeknd", 222),
     Song("As it Was", "Harry Styles", 167),
@@ -153,14 +173,21 @@ def commands():
                 player.playAllSongs()
             
             elif commands == 2:
-                selectedSong = str(input("Song title: "))
-                displayOnPlayCommands()
-                player.playSingleSong(selectedSong.lower())
+                while True:
+                    try:
+                        selectedSong = str(input("\n                           Song title: "))
+                        player.playSingleSong(selectedSong.lower())
+                    except ValueError:
+                        print("[Invalid Input]")
 
             elif commands == 3:
-                selectedSong = str(input("Song title: "))
-                displayOnPlayCommands()
-                player.searchSong(selectedSong.lower())
+                while True:
+                    try:
+                        selectedSong = str(input("\n                           Song title: "))
+                        player.searchSong(selectedSong.lower())
+                    except ValueError:
+                        print("[Invalid Input]")
+
         except ValueError:
             print("[Invalid Input]")
 
@@ -169,5 +196,4 @@ def main():
     commands()
 
 main()
-
 
