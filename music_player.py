@@ -34,7 +34,7 @@ class MusicPlayer:
                 if key == "P":
                     player.playPrevSong()
                 if key == "X":
-                    print("                           Music player stopped.\n")
+                    print("\n                           Music player stopped.\n")
                     commands()
 
     def playAllSongs(self):
@@ -44,24 +44,22 @@ class MusicPlayer:
             self.history.appendleft(song)
             print(f"\n                      Now playing: {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
-            # print(self.songQueue)
-            # print("***********")
-            # print(self.history)
-            # print("***********")
-            # print(self.playlist)
-            # print("***********")
 
     def playSingleSong(self, title):
         for song in self.playlist:
-            self.songQueue.append(song)
+            # self.songQueue.popleft()
+            # self.history.appendleft(song)
+            print(self.playlist)
             lowerSong = song.title.lower() 
             if  lowerSong == title:
                 print()
                 displayOnPlayCommands()
                 print(f"\n                       Now playing: {song.title} by {song.artist}")
                 player.durationCountdown(song.duration)
+                print(f"                            The music is done playing.\n")
+                break
         else:
-            print("                         [Song not found in the playlist]")
+            print("\n                         Song not found in the playlist.")
             commands()
 
     def searchSong(self, title):
@@ -71,16 +69,20 @@ class MusicPlayer:
                 print()
                 displayOnPlayCommands()
                 print(f"\n                      Search Result: {song.title} by {song.artist}")
-                permission = input("                     Do you want to play this song? [y/n]\n                                 >>> ").lower()
-        
-                if permission == "y":
-                    print(f"\n                      Now playing: {song.title} by {song.artist}")
-                    player.durationCountdown(song.duration)
-                elif permission == "n":
-                    commands()
-                return song
+                while True:
+                    try:
+                        permission = input("                     Do you want to play this song? [y/n]\n                                 >>> ").lower()
+                        if permission == "y":
+                            self.songQueue.popleft()
+                            self.history.appendleft(song)
+                            print(f"\n                      Now playing: {song.title} by {song.artist}")
+                            player.durationCountdown(song.duration)
+                        elif permission == "n":
+                            commands()
+                    except ValueError:
+                        print("[INVALID INPUT]")
         else:
-            print("                         [Song not found in the playlist]")
+            print("\n                         Song not found in the playlist.")
             commands()
 
     def playPrevSong(self):
@@ -101,7 +103,6 @@ class MusicPlayer:
         else:
             song = self.songQueue.popleft()
             self.history.appendleft(song)
-            # self.history.append(song)
             print(f"\n                      Next song playing: {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
             
@@ -110,16 +111,17 @@ class MusicPlayer:
         yourSongs.append(newSong)
         player.addToPlaylist(newSong)
 
-        yourSongsText = "\nUpdated Version of Your Songs:"
+        print()
+        yourSongsText = "Updated Version of Your Songs:"
         textsToBeCentered.append(yourSongsText)
         for song in yourSongs:
-            songTitles = f"{song.title} by {song.artist}"
+            songTitles = f"{song.title.title()} by {song.artist.title()}"
             textsToBeCentered.append(songTitles)
-        
-        # for song in player.playlist:
         for text in textsToBeCentered:
             centerOutput(text)
         textsToBeCentered.clear()
+
+        commands()
 
 player = MusicPlayer()
 
@@ -145,13 +147,13 @@ for song in yourSongs:
 # This is for aesthetic purposes only. A function to center a text output.
 # ************************************************************************
 textsToBeCentered = []
+txtDisplayOnPlayCommands = []
 def centerOutput(text):
     width = 80
     left_padding = (width - len(text))//2
     right_padding = width - len(text) - left_padding
     print(" " * left_padding + text + " " * right_padding)
 
-txtDisplayOnPlayCommands = []
 def displayOnPlayCommands():
     onPlayCommand1 = "Press [N] to play the next song"
     onPlayCommand2 = "Press [P] to play the previous song"
@@ -178,23 +180,20 @@ def welcomeUser():
         centerOutput(text)
     textsToBeCentered.clear()
 # ************************************************************************
-
 def commands():
     while True:
         try:
             commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n4. Add a song\n>>> "))
-
             if commands == 1:
                 displayOnPlayCommands()
                 player.playAllSongs()
             
             elif commands == 2:
-                while True:
-                    try:
-                        selectedSong = str(input("\n                           Song title: "))
-                        player.playSingleSong(selectedSong.lower())
-                    except ValueError:
-                        print("[Invalid Input]")
+                try:
+                    selectedSong = str(input("\n                               Song title: "))
+                    player.playSingleSong(selectedSong.lower())
+                except ValueError:
+                    print("[Invalid Input]")
 
             elif commands == 3:
                 while True:
@@ -205,16 +204,13 @@ def commands():
                         print("[Invalid Input]")
 
             elif commands == 4:
-                while True:
-                    try:
-                        songTitle = str(input("Song title: "))
-                        songArtist = str(input("Artist: "))
-                        songDuration = int(input("Duration (sec): "))
-                        player.addSong(songTitle, songArtist, songDuration)
-                        print(yourSongs)
-                        print(player.playlist)
-                    except ValueError:
-                        print("[Invalid Input]")
+                try:
+                    songTitle = str(input("\n                           Song title: ")).lower()
+                    songArtist = str(input("                           Artist: ")).lower()
+                    songDuration = int(input("                           Duration (sec): "))
+                    player.addSong(songTitle, songArtist, songDuration)
+                except ValueError:
+                    print("\n                           Enter proper format for duration.")
 
         except ValueError:
             print("[Invalid Input]")
