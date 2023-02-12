@@ -76,6 +76,7 @@ class MusicPlayer:
                         commands()
                 except ValueError:
                     print("[INVALID INPUT]")
+                break
         else:
             print("\n                         Song not found in the playlist.")
             commands()
@@ -118,7 +119,7 @@ class MusicPlayer:
         textsToBeCentered.clear()
         commands()
 
-    def sortPlaylist(self, key=lambda song: song.title[0]):
+    def sortPlaylist(self, key=lambda song: song.title[0].lower()):
         self.playlist.sort(key=key)
 
 player = MusicPlayer()
