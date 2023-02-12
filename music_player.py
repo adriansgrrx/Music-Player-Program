@@ -22,11 +22,11 @@ class MusicPlayer:
 
     def durationCountdown(self, duration):
         while duration:
+            duration -= 1
             mins, secs = divmod(duration, 60)
             timeFormat = '{:02d}:{:02d}'.format(mins, secs)
             print(f"                                    {timeFormat}", end='\r')
             time.sleep(1)
-            duration -= 1
             if msvcrt.kbhit():
                 key = msvcrt.getch().decode("utf-8")
                 if key == "N":
