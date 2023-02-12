@@ -47,12 +47,8 @@ class MusicPlayer:
 
     def playSingleSong(self, title):
         for song in self.playlist:
-            # self.songQueue.popleft()
-            # self.history.appendleft(song)
-            print(self.playlist)
             lowerSong = song.title.lower() 
             if  lowerSong == title:
-                print()
                 displayOnPlayCommands()
                 print(f"\n                       Now playing: {song.title} by {song.artist}")
                 player.durationCountdown(song.duration)
@@ -69,18 +65,17 @@ class MusicPlayer:
                 print()
                 displayOnPlayCommands()
                 print(f"\n                      Search Result: {song.title} by {song.artist}")
-                while True:
-                    try:
-                        permission = input("                     Do you want to play this song? [y/n]\n                                 >>> ").lower()
-                        if permission == "y":
-                            self.songQueue.popleft()
-                            self.history.appendleft(song)
-                            print(f"\n                      Now playing: {song.title} by {song.artist}")
-                            player.durationCountdown(song.duration)
-                        elif permission == "n":
-                            commands()
-                    except ValueError:
-                        print("[INVALID INPUT]")
+                try:
+                    permission = input("                     Do you want to play this song? [y/n]\n                                 >>> ").lower()
+                    if permission == "y":
+                        self.songQueue.popleft()
+                        self.history.appendleft(song)
+                        print(f"\n                      Now playing: {song.title} by {song.artist}")
+                        player.durationCountdown(song.duration)
+                    elif permission == "n":
+                        commands()
+                except ValueError:
+                    print("[INVALID INPUT]")
         else:
             print("\n                         Song not found in the playlist.")
             commands()
@@ -89,7 +84,6 @@ class MusicPlayer:
         if not self.history:
             print("\n                         No previous songs in the playlist.\n")
             commands()
-        
         else:
             getSong = self.history.popleft()
             self.songQueue.append(getSong)
@@ -110,18 +104,22 @@ class MusicPlayer:
         newSong = Song(title, artist, duration)
         yourSongs.append(newSong)
         player.addToPlaylist(newSong)
-
         print()
         yourSongsText = "Updated Version of Your Songs:"
         textsToBeCentered.append(yourSongsText)
-        for song in yourSongs:
-            songTitles = f"{song.title.title()} by {song.artist.title()}"
+
+        player.sortPlaylist()
+        sortedPlaylist = player.playlist
+        for song in sortedPlaylist:
+            songTitles = f"{song.title} by {song.artist}"
             textsToBeCentered.append(songTitles)
         for text in textsToBeCentered:
             centerOutput(text)
         textsToBeCentered.clear()
-
         commands()
+
+    def sortPlaylist(self, key=lambda song: song.title[0]):
+        self.playlist.sort(key=key)
 
 player = MusicPlayer()
 
@@ -155,6 +153,7 @@ def centerOutput(text):
     print(" " * left_padding + text + " " * right_padding)
 
 def displayOnPlayCommands():
+    print()
     onPlayCommand1 = "Press [N] to play the next song"
     onPlayCommand2 = "Press [P] to play the previous song"
     onPlayCommand3 = "Press [X] to stop the song"
@@ -173,7 +172,9 @@ def welcomeUser():
     textsToBeCentered.append(tagline)
     textsToBeCentered.append(yourSongsText)
 
-    for song in player.playlist:
+    player.sortPlaylist()
+    sortedPlaylist = player.playlist
+    for song in sortedPlaylist:
         songTitles = f"{song.title} by {song.artist}"
         textsToBeCentered.append(songTitles)
     for text in textsToBeCentered:
