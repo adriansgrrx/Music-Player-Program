@@ -105,6 +105,22 @@ class MusicPlayer:
             print(f"\n                      Next song playing: {song.title} by {song.artist}")
             player.durationCountdown(song.duration)
             
+    def addSong(self, title, artist, duration):
+        newSong = Song(title, artist, duration)
+        yourSongs.append(newSong)
+        player.addToPlaylist(newSong)
+
+        yourSongsText = "\nUpdated Version of Your Songs:"
+        textsToBeCentered.append(yourSongsText)
+        for song in yourSongs:
+            songTitles = f"{song.title} by {song.artist}"
+            textsToBeCentered.append(songTitles)
+        
+        # for song in player.playlist:
+        for text in textsToBeCentered:
+            centerOutput(text)
+        textsToBeCentered.clear()
+
 player = MusicPlayer()
 
 # By default, these are the songs available to play.
@@ -188,6 +204,18 @@ def commands():
                     except ValueError:
                         print("[Invalid Input]")
 
+            elif commands == 4:
+                while True:
+                    try:
+                        songTitle = str(input("Song title: "))
+                        songArtist = str(input("Artist: "))
+                        songDuration = int(input("Duration (sec): "))
+                        player.addSong(songTitle, songArtist, songDuration)
+                        print(yourSongs)
+                        print(player.playlist)
+                    except ValueError:
+                        print("[Invalid Input]")
+
         except ValueError:
             print("[Invalid Input]")
 
@@ -196,4 +224,3 @@ def main():
     commands()
 
 main()
-
