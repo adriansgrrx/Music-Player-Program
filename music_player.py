@@ -63,7 +63,6 @@ class MusicPlayer:
         for song in self.playlist:
             lowerSong = song.title.lower()
             if  lowerSong == title:
-                print()
                 displayOnPlayCommands()
                 print(f"\n                      Search Result: {song.title.title()} by {song.artist.title()}")
                 try:
@@ -119,6 +118,28 @@ class MusicPlayer:
             centerOutput(text)
         textsToBeCentered.clear()
         commands()
+
+    def deleteSong(self, title):
+        for i, song in enumerate(self.playlist):
+            if song.title.lower() == title:
+                self.playlist.pop(i)
+                
+                print()
+                yourSongsText = "Updated Version of Your Songs:"
+                textsToBeCentered.append(yourSongsText)
+
+                self.sortPlaylist()
+                for song in self.sortedPlaylist:
+                    songTitles = f"{song.title.title()} by {song.artist.title()}"
+                    textsToBeCentered.append(songTitles)
+                for text in textsToBeCentered:
+                    centerOutput(text)
+                textsToBeCentered.clear()
+                print(f"\n                  '{title.title()}' has been deleted from the playlist.")
+
+                commands()
+        print(f"                    Song with title '{title.title()}' not found.")
+
 
     def sortPlaylist(self, key=lambda song: song.title[0].lower()):
         self.playlist.sort(key=key)
@@ -187,7 +208,7 @@ def welcomeUser():
 def commands():
     while True:
         try:
-            commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n4. Add a song\n>>> "))
+            commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n4. Add a song\n5. Delete a song\n>>> "))
             if commands == 1:
                 displayOnPlayCommands()
                 player.playAllSongs()
@@ -215,6 +236,13 @@ def commands():
                     player.addSong(songTitle, songArtist, songDuration)
                 except ValueError:
                     print("\n                           Enter proper format for duration.")
+
+            elif commands == 5:
+                # try:
+                    delSong = str(input("\n                           Song title: ")).lower()
+                    player.deleteSong(delSong)
+                # except ValueError:
+                #     print("\n                           Enter proper format for duration.")
 
         except ValueError:
             print("[Invalid Input]")
