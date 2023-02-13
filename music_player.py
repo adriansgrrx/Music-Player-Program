@@ -1,6 +1,15 @@
+"""
+This program is called SoundScape, a simple Music Player structure that represents Data Structure and Algorithm concepts. 
+
+Classes and numerous data structures, including lists and deques, are used by the program. The title, artist, and duration are the three elements that make up the Song class, which is used to represent a single song. The music player is represented by the MusicPlayer class, which also has methods for playing music, adding songs to a playlist, finding songs, and other functions. 
+
+The song queue and the history of songs played are stored in the deque data structure, allowing for quick and effective access to these songs. The time and msvcrt modules are also used by the program to construct the countdown timer during music playback and to recognize human input, respectively.
+"""
+
 import collections
 import time
 import msvcrt
+import sys
 
 class Song:
     def __init__(self, title, artist, duration):
@@ -21,6 +30,7 @@ class MusicPlayer:
         self.playlist.append(song)
         self.sortPlaylist()
 
+    # countdown function to make a music player-like feature which is counting down for a certain duration.
     def durationCountdown(self, duration):
         while duration:
             duration -= 1
@@ -28,14 +38,16 @@ class MusicPlayer:
             timeFormat = '{:02d}:{:02d}'.format(mins, secs)
             print(f"                                    {timeFormat}", end='\r')
             time.sleep(1)
+            # The following code block handles keyboard input for next, previous, and stop functions.
             if msvcrt.kbhit():
                 key = msvcrt.getch().decode("utf-8")
                 if key == "N":
                     self.playNextSong()
-                if key == "P":
+                elif key == "P":
                     self.playPrevSong()
-                if key == "X":
-                    print("\n                           Music player stopped.\n")
+                elif key == "X":
+                    print("\n                               Music player stopped.\n")
+                    # Recall the music player commands
                     commands()
 
     def playAllSongs(self):
@@ -136,7 +148,7 @@ class MusicPlayer:
                     centerOutput(text)
                 textsToBeCentered.clear()
                 print(f"\n                  '{title.title()}' has been deleted from the playlist.")
-
+                # Recall the music player commands
                 commands()
         print(f"                    Song with title '{title.title()}' not found.")
 
@@ -146,6 +158,7 @@ class MusicPlayer:
         self.sortedPlaylist = self.playlist
         self.songQueue = collections.deque(self.sortedPlaylist)
 
+# Assigning the music player class to a variable called player
 player = MusicPlayer()
 
 # By default, these are the UNSORTED songs available to play.
@@ -244,14 +257,13 @@ def commands():
             elif commands == 6:
                 print("\n                       The music player is now closing...")
                 player.durationCountdown(4)
-                print("                         Thank you for using SoundScape!\n")
-
-                break
+                print("                     Thank you for listening with SoundScape!\n")
+                sys.exit()
         except ValueError:
             print("[Invalid Input]")
 
 def main():
     welcomeUser()
     commands()
-
+# main program execution
 main()
