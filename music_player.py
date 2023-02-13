@@ -208,7 +208,7 @@ def welcomeUser():
 def commands():
     while True:
         try:
-            commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n4. Add a song\n5. Delete a song\n>>> "))
+            commands = int(input("\nHere are the commands:\n1. Play all\n2. Play a song\n3. Search a song\n4. Add a song\n5. Delete a song\n6. Exit\n>>> "))
             if commands == 1:
                 displayOnPlayCommands()
                 player.playAllSongs()
@@ -238,12 +238,15 @@ def commands():
                     print("\n                           Enter proper format for duration.")
 
             elif commands == 5:
-                # try:
                     delSong = str(input("\n                           Song title: ")).lower()
                     player.deleteSong(delSong)
-                # except ValueError:
-                #     print("\n                           Enter proper format for duration.")
+            
+            elif commands == 6:
+                print("\n                       The music player is now closing...")
+                player.durationCountdown(4)
+                print("                         Thank you for using SoundScape!\n")
 
+                break
         except ValueError:
             print("[Invalid Input]")
 
