@@ -109,7 +109,8 @@ class MusicPlayer:
         yourSongsText = "Updated Version of Your Songs:"
         textsToBeCentered.append(yourSongsText)
 
-        for song in yourSongs:
+        self.sortPlaylist()
+        for song in self.sortedPlaylist:
             songTitles = f"{song.title} by {song.artist}"
             textsToBeCentered.append(songTitles)
         for text in textsToBeCentered:
@@ -119,6 +120,8 @@ class MusicPlayer:
 
     def sortPlaylist(self, key=lambda song: song.title[0].lower()):
         self.playlist.sort(key=key)
+        self.sortedPlaylist = self.playlist
+        self.songQueue = collections.deque(self.sortedPlaylist)
 
 player = MusicPlayer()
 
@@ -171,7 +174,8 @@ def welcomeUser():
     textsToBeCentered.append(tagline)
     textsToBeCentered.append(yourSongsText)
 
-    for song in yourSongs:
+    player.sortPlaylist()
+    for song in player.sortedPlaylist:
         songTitles = f"{song.title} by {song.artist}"
         textsToBeCentered.append(songTitles)
     for text in textsToBeCentered:
