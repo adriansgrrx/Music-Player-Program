@@ -30,28 +30,28 @@ class MusicPlayer:
             if msvcrt.kbhit():
                 key = msvcrt.getch().decode("utf-8")
                 if key == "N":
-                    player.playNextSong()
+                    self.playNextSong()
                 if key == "P":
-                    player.playPrevSong()
+                    self.playPrevSong()
                 if key == "X":
-                    print("\n                           Music player stopped.\n")
+                    print("\n                           Music self stopped.\n")
                     commands()
 
     def playAllSongs(self):
-        for song in player.playlist:
+        for song in self.playlist:
             self.songQueue.popleft()
             self.songQueue.append(song)
             self.history.appendleft(song)
             print(f"\n                      Now playing: {song.title} by {song.artist}")
-            player.durationCountdown(song.duration)
+            self.durationCountdown(song.duration)
 
     def playSingleSong(self, title):
         for song in self.playlist:
-            lowerSong = song.title.lower() 
+            lowerSong = song.title.lower()
             if  lowerSong == title:
                 displayOnPlayCommands()
                 print(f"\n                       Now playing: {song.title} by {song.artist}")
-                player.durationCountdown(song.duration)
+                self.durationCountdown(song.duration)
                 print(f"                            The music is done playing.\n")
                 break
         else:
@@ -60,7 +60,7 @@ class MusicPlayer:
 
     def searchSong(self, title):
         for song in self.playlist:
-            lowerSong = song.title.lower() 
+            lowerSong = song.title.lower()
             if  lowerSong == title:
                 print()
                 displayOnPlayCommands()
@@ -71,7 +71,7 @@ class MusicPlayer:
                         self.songQueue.popleft()
                         self.history.appendleft(song)
                         print(f"\n                      Now playing: {song.title} by {song.artist}")
-                        player.durationCountdown(song.duration)
+                        self.durationCountdown(song.duration)
                     elif permission == "n":
                         commands()
                 except ValueError:
@@ -89,7 +89,7 @@ class MusicPlayer:
             getSong = self.history.popleft()
             self.songQueue.append(getSong)
             print(f"\n                      Previous Song playing: {getSong.title} by {getSong.artist}")
-            player.durationCountdown(getSong.duration)
+            self.durationCountdown(getSong.duration)
 
     def playNextSong(self):
         if not self.songQueue:
@@ -99,19 +99,17 @@ class MusicPlayer:
             song = self.songQueue.popleft()
             self.history.appendleft(song)
             print(f"\n                      Next song playing: {song.title} by {song.artist}")
-            player.durationCountdown(song.duration)
-            
+            self.durationCountdown(song.duration)
+
     def addSong(self, title, artist, duration):
         newSong = Song(title, artist, duration)
         yourSongs.append(newSong)
-        player.addToPlaylist(newSong)
+        self.addToPlaylist(newSong)
         print()
         yourSongsText = "Updated Version of Your Songs:"
         textsToBeCentered.append(yourSongsText)
 
-        player.sortPlaylist()
-        sortedPlaylist = player.playlist
-        for song in sortedPlaylist:
+        for song in yourSongs:
             songTitles = f"{song.title} by {song.artist}"
             textsToBeCentered.append(songTitles)
         for text in textsToBeCentered:
@@ -126,7 +124,7 @@ player = MusicPlayer()
 
 # By default, these are the songs available to play.
 yourSongs = [
-    Song("Flowers", "Miley Cyrus", 2),
+    Song("Flowers", "Miley Cyrus", 200),
     Song("Kill Bill", "Sza", 154),
     Song("Creepin'", "The Weeknd", 222),
     Song("As it Was", "Harry Styles", 167),
@@ -173,9 +171,7 @@ def welcomeUser():
     textsToBeCentered.append(tagline)
     textsToBeCentered.append(yourSongsText)
 
-    player.sortPlaylist()
-    sortedPlaylist = player.playlist
-    for song in sortedPlaylist:
+    for song in yourSongs:
         songTitles = f"{song.title} by {song.artist}"
         textsToBeCentered.append(songTitles)
     for text in textsToBeCentered:
@@ -189,7 +185,7 @@ def commands():
             if commands == 1:
                 displayOnPlayCommands()
                 player.playAllSongs()
-            
+
             elif commands == 2:
                 try:
                     selectedSong = str(input("\n                               Song title: "))
