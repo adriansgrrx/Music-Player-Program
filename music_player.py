@@ -19,6 +19,7 @@ class MusicPlayer:
 
     def addToPlaylist(self, song):
         self.playlist.append(song)
+        self.sortPlaylist()
 
     def durationCountdown(self, duration):
         while duration:
@@ -34,7 +35,7 @@ class MusicPlayer:
                 if key == "P":
                     self.playPrevSong()
                 if key == "X":
-                    print("\n                           Music self stopped.\n")
+                    print("\n                           Music player stopped.\n")
                     commands()
 
     def playAllSongs(self):
@@ -64,9 +65,9 @@ class MusicPlayer:
             if  lowerSong == title:
                 print()
                 displayOnPlayCommands()
-                print(f"\n                      Search Result: {song.title} by {song.artist}")
+                print(f"\n                      Search Result: {song.title.title()} by {song.artist.title()}")
                 try:
-                    permission = input("                     Do you want to play this song? [y/n]\n                                 >>> ").lower()
+                    permission = input(f"                     Do you want to play {song.title.title()}? [y/n]\n                                 >>> ").lower()
                     if permission == "y":
                         self.songQueue.popleft()
                         self.history.appendleft(song)
@@ -103,15 +104,16 @@ class MusicPlayer:
 
     def addSong(self, title, artist, duration):
         newSong = Song(title, artist, duration)
-        yourSongs.append(newSong)
         self.addToPlaylist(newSong)
+        # yourSongs.append(newSong)
+        
+        self.sortPlaylist()
         print()
         yourSongsText = "Updated Version of Your Songs:"
         textsToBeCentered.append(yourSongsText)
 
-        self.sortPlaylist()
         for song in self.sortedPlaylist:
-            songTitles = f"{song.title} by {song.artist}"
+            songTitles = f"{song.title.title()} by {song.artist.title()}"
             textsToBeCentered.append(songTitles)
         for text in textsToBeCentered:
             centerOutput(text)
@@ -125,7 +127,7 @@ class MusicPlayer:
 
 player = MusicPlayer()
 
-# By default, these are the songs available to play.
+# By default, these are the UNSORTED songs available to play.
 yourSongs = [
     Song("Flowers", "Miley Cyrus", 200),
     Song("Kill Bill", "Sza", 154),
